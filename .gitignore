@@ -9,4 +9,5 @@ wheels/
 # Virtual environments
 .venv
 .env
-datastore/*
+datastore/*.json
+datastore/*.xlsx
