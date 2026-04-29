@@ -11,3 +11,4 @@ wheels/
 .env
 datastore/*.json
 datastore/*.xlsx
+datastore/*.txt
