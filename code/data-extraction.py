@@ -117,11 +117,12 @@ def get_videos_metadata():
                     }
                     videos_metadata.append(video_stat)
                 print("############# rate_limit ##############")
-                sleep(20)
+                sleep(10)
+                
             
         p=Path('datastore/videos.json')
-        with p.open('a+') as file:
-            json.dump(videos_metadata,file,indent=4)
+        with p.open('a+',encoding='utf-8') as file:
+            json.dump(videos_metadata,file,indent=4,ensure_ascii=False)
             
 
 get_channel_metadata()
