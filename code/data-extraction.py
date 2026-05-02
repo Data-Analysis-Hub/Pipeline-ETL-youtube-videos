@@ -9,9 +9,6 @@ from time import sleep
 load_dotenv('.env')
 yt_key=getenv('YT_API_KEY')
 
-channel_metadata={}
-uploads_playlist_videos=[]
-videos_metadata=[]
 
 
 auth_headers={
@@ -20,7 +17,8 @@ auth_headers={
     }
 
 def get_channel_metadata():
-    yt_channel_handle="@MavenAnalytics"
+    channel_metadata={}
+    yt_channel_handle="@MavenAnalytics" # 
     channel_metadata_path="datastore/channel_metadata.json"
 
     if not Path(channel_metadata_path).exists():
@@ -36,10 +34,11 @@ def get_channel_metadata():
             channel_metadata['uploads']=main_playlist_id ######### ID Upload
             channel_metadata['title']=channel_name 
             channel_metadata['videoCount']=vid_count 
-            with p.open("w+") as f:
-                json.dump(channel_metadata,f,indent=4)
+        with p.open("w+") as f:
+            json.dump(channel_metadata,f,indent=4)
 
 def get_videos_ids_list():
+    uploads_playlist_videos=[]
     with open('datastore/channel_metadata.json') as f:
 
         ########### intervals to follow & while loop flag #################
@@ -48,10 +47,11 @@ def get_videos_ids_list():
         small_rate_limit=20
         finished=False
         ##########################
+        
+        upload_id=json.load(f)['uploads']
         videos_list_path="datastore/videosIds.txt"
         if not Path(videos_list_path).exists():
             p=Path(videos_list_path)
-            upload_id=json.load(f)['uploads']
             yt_channel_params={'part':'contentDetails','maxResults':50,'playlistId':upload_id}
 
             while not finished:
@@ -88,6 +88,7 @@ def get_videos_ids_list():
 
 
 def get_videos_metadata():
+    videos_metadata=[]
     # read the txt file line by line, get the id query the API about what you need specifically, append it as a dict in the dict videos_metadata
     if not Path("datastore/videos.json").exists():
         with open('datastore/videosIds.txt') as f:
@@ -121,7 +122,7 @@ def get_videos_metadata():
                 
             
         p=Path('datastore/videos.json')
-        with p.open('a+',encoding='utf-8') as file:
+        with p.open('w+',encoding='utf-8') as file:
             json.dump(videos_metadata,file,indent=4,ensure_ascii=False)
             
 
